@@ -1,7 +1,13 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
+
+def propertiesFile = rootProject.file("theweather.properties")
+def properties = new Properties()
+properties.load(new FileInputStream(propertiesFile))
 
 android {
     compileSdkVersion 30
@@ -15,6 +21,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "AEMET_APIURL", properties['AEMET_APIURL'])
+        buildConfigField("String", "AEMET_APIKEY", properties['AEMET_APIKEY'])
+        buildConfigField("String", "CITIES_RELOAD_EXPIRES_MINUTES", properties['CITIES_RELOAD_EXPIRES_MINUTES'])
     }
 
     buildTypes {
@@ -30,16 +40,35 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
+    implementation kotlinLibs.values()
+    implementation androidLibs.values()
+    implementation androidKtxLibs.values()
+    implementation hiltLibs.values()
+    implementation retrofitLibs.values()
+    implementation roomLibs.values()
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    annotationProcessor annotationProcessorLibs.values()
+
+    kapt androidKaptLibs.values()
+    kaptAndroidTest androidTestKaptLibs.values()
+    kaptTest testKaptLibs.values()
+
+    testImplementation testLibs.values()
+    androidTestImplementation androidTestLibs.values()
+}
+
+kapt {
+    correctErrorTypes true
+    javacOptions {
+        // These options are normally set automatically via the Hilt Gradle plugin, but we
+        // set them manually to workaround a bug in the Kotlin 1.5.20
+        option("-Adagger.fastInit=ENABLED")
+        option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
+    }
 }

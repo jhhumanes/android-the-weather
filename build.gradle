@@ -9,6 +9,8 @@ buildscript {
         classpath "com.android.tools.build:gradle:4.2.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.37'
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -18,7 +20,72 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
+    }
+    ext {
+        kotlinLibs = [
+                stdlib        : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+                coroutinesCore: 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+        ]
+
+        androidLibs = [
+                appcompat        : 'androidx.appcompat:appcompat:1.3.0',
+                material         : 'com.google.android.material:material:1.3.0',
+                constraintLayout : 'androidx.constraintlayout:constraintlayout:2.0.4',
+                androidxCore     : 'androidx.core:core-ktx:1.5.0',
+                lifecycle        : "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha02",
+                androidCoroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+        ]
+
+        androidKtxLibs = [
+                fragmentKtx: "androidx.fragment:fragment-ktx:1.3.5"
+        ]
+
+        androidKaptLibs = [
+                hiltCompiler: 'com.google.dagger:hilt-compiler:2.37',
+                roomCompiler: 'androidx.room:room-compiler:2.3.0'
+        ]
+
+
+
+        annotationProcessorLibs = [
+                roomAnnotationPreprocessor: 'androidx.room:room-compiler:2.3.0'
+        ]
+
+        hiltLibs = [
+                hiltAndroid: 'com.google.dagger:hilt-android:2.37'
+        ]
+
+        retrofitLibs = [
+                retrofit          : 'com.squareup.retrofit2:retrofit:2.9.0',
+                gson              : 'com.squareup.retrofit2:converter-gson:2.9.0',
+                loggingInterceptor: 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+        ]
+
+        roomLibs = [
+                room   : 'androidx.room:room-runtime:2.3.0',
+                roomKtx: 'androidx.room:room-ktx:2.3.0'
+        ]
+
+        androidTestKaptLibs = [
+                hiltCompiler: 'com.google.dagger:hilt-compiler:2.37'
+        ]
+
+        testKaptLibs = [
+                hiltCompiler: 'com.google.dagger:hilt-compiler:2.37'
+        ]
+
+        testLibs = [
+                junit         : 'junit:junit:4.13.2',
+                coroutinesTest: 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0',
+                hiltTest      : 'com.google.dagger:hilt-android-testing:2.37',
+                roomTest      : 'androidx.room:room-testing:2.3.0'
+        ]
+
+        androidTestLibs = [
+                extJunit       : 'androidx.test.ext:junit:1.1.2',
+                espresso       : 'androidx.test.espresso:espresso-core:3.3.0',
+                hiltAndroidTest: 'com.google.dagger:hilt-android-testing:2.37'
+        ]
     }
 }
 
